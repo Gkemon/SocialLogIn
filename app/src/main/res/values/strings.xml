@@ -6,8 +6,10 @@
 
     <string name="action_settings">Settings</string>
 
+    <!--facebook login-->
     <string name="facebook_app_id">1449762395169298</string>
     <string name="fb_login_protocol_scheme">fb1449762395169298</string>
+    <!--facebook login-->
 
 
 </resources>

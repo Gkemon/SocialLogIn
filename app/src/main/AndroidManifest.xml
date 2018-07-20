@@ -26,6 +26,7 @@
         </activity>
 
 
+        <!--Facebook login-->
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
 
@@ -43,6 +44,8 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
+        <!--Facebook login-->
 
     </application>
 

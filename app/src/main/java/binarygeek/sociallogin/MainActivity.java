@@ -16,13 +16,20 @@ import android.widget.Toast;
 
 import binarygeek.sociallogin.FacebookHelperClasses.FacebookHelper;
 import binarygeek.sociallogin.FacebookHelperClasses.FacebookListener;
+import binarygeek.sociallogin.GoogleHelperClasses.GoogleHelper;
+import binarygeek.sociallogin.GoogleHelperClasses.GoogleListener;
 
+//Facebook login tutorial
+//https://developers.facebook.com/
 
+//Gmail login tutorial
+// https://www.androidtutorialpoint.com/material-design/adding-google-login-android-app/
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener , FacebookListener,View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener , FacebookListener,GoogleListener,View.OnClickListener {
 
-    Button mFacebookButton;
+    Button mFacebookButton,mGoogleButton;
     private FacebookHelper mFacebook;
+    private GoogleHelper googleHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,18 +40,26 @@ public class MainActivity extends AppCompatActivity
         mFacebookButton.setOnClickListener(this);
         mFacebook = new FacebookHelper(this);
 
+        mGoogleButton=(Button)findViewById(R.id.gmail_button);
+        mGoogleButton.setOnClickListener(this);
+        googleHelper = new GoogleHelper(this, this, null);
+
+
 
         taskOfDrawer();
 
     }
 
+
+
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
         mFacebook.onActivityResult(requestCode, resultCode, data);
+        googleHelper.onActivityResult(requestCode, resultCode, data);
+
 
     }
-
 
 
     @Override
@@ -75,11 +90,46 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+
+
+
+    //Gmail
+    @Override
+    public void onGoogleAuthSignIn(String authToken, String userId, String email, String name) {
+
+        Toast.makeText(this,"Google login success : Your AuthToken is - "+authToken,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onGoogleAuthSignInFailed(String errorMessage) {
+        Log.d("GK","on Google Auth SignInFailed");
+
+        Toast.makeText(this,"Facebook login failed because of "+errorMessage,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onGoogleAuthSignOut() {
+
+        Toast.makeText(this,"Google login out ",Toast.LENGTH_LONG).show();
+        Log.d("GK","Google SignOut");
+
+    }
+
+    //Gmail
+
+
+
+
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.facebook_button:
                     mFacebook.performSignIn(this);
+                    break;
+
+            case R.id.gmail_button:
+                    googleHelper.performSignIn(this);
                     break;
 
         }
@@ -141,5 +191,8 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+
 
 }
